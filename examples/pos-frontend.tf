@@ -6,4 +6,5 @@ module "pos-frontend" {
 
   required_status_checks = ["Testing"]
   autolink_references    = ["KCORE"]
+  require_code_owner_reviews = true
 }
