@@ -1,5 +1,5 @@
 module "cb-pos" {
-  source = "../"
+  source = "git@github.com:Serneum/gh-terraform-poc.git?ref=v0.1.0"
 
   name        = "cb_pos"
   description = "CityBase Point of Sale"
