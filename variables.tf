@@ -37,3 +37,12 @@ variable "require_code_owner_reviews" {
   description = "Require an approved review in pull requests from a designated code owner."
   default     = false
 }
+
+variable "team_permissions" {
+  type        = list(object({
+                id = number
+                permission = string
+              }))
+  description = "The list of teams and their permissions on the repository."
+  default     = []
+}

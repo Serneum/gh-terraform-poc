@@ -11,6 +11,9 @@ function usage() {
   echo "                          A reference needs to include its ID and should have the following format: <name>:<id>."
   echo "                          Example:"
   echo "                              -r KCORE:99588 -r KOPS:99581 -r SE:99586"
+  echo "    -t TEAMS          A team that has permissions on the repository. Can be set multiple times."
+  echo "                          A team is represented by its ID. Ex: 825103."
+
   exit 1
 }
 
@@ -32,7 +35,8 @@ function execute() {
 
 dry_run=
 autolink_references=()
-optstring="dn:r:"
+team_permissions=()
+optstring="dn:r:t:"
 while getopts ${optstring} opt; do
   case ${opt} in
     d)
@@ -44,6 +48,9 @@ while getopts ${optstring} opt; do
       ;;
     r)
       autolink_references+=("${OPTARG}")
+      ;;
+    t)
+      team_permissions+=("${OPTARG}")
       ;;
     :)
       echo "Error: -${OPTARG} requires an argument."
@@ -77,4 +84,9 @@ for reference in ${autolink_references[@]}
 do
     reference_parts=($(echo "${reference/:/ }"))
     execute "${module_name}".github_repository_autolink_reference.autolink_reference"[\"${reference_parts[0]}\"]" "${repo_name}"/"${reference_parts[1]}"
+done
+
+for team in ${team_permissions[@]}
+do
+    execute "${module_name}".github_team_repository.team_permission"[\"${team}\"]" "${team}":"${repo_name}"
 done
