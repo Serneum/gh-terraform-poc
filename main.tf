@@ -58,3 +58,10 @@ resource "github_branch_protection" "branch-protection-master" {
     require_code_owner_reviews      = var.require_code_owner_reviews
   }
 }
+
+resource "github_team_repository" "team_permission" {
+  for_each   = { for team in var.team_permissions: team.id => team }
+  repository = github_repository.repo.name
+  team_id    = each.key
+  permission = each.value.permission
+}
